@@ -1,0 +1,67 @@
+import assert from 'node:assert/strict';
+import { once } from 'node:events';
+import { readFile, mkdir } from 'node:fs/promises';
+import { chromium } from 'playwright';
+import { server } from '../scripts/serve.mjs';
+if (!server.listening) await once(server, 'listening');
+let browser;
+const origin = 'http://127.0.0.1:' + server.address().port;
+const errors = [];
+await mkdir('test-results', { recursive: true });
+try {
+  browser = await chromium.launch();
+  for (const width of [360, 390, 768, 1440]) {
+    const page = await browser.newPage({ viewport: { width, height: 960 }, reducedMotion: 'reduce' });
+    page.on('pageerror', error => errors.push(error.message));
+    page.on('response', response => { if (response.status() >= 400) errors.push(response.url() + ': ' + response.status()); });
+    await page.goto(origin);
+    assert.equal(await page.locator('h1').count(), 1);
+    assert.ok(await page.getByRole('heading', { level: 1 }).isVisible());
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No horizontal overflow at ' + width);
+    const brokenAnchors = await page.locator('a[href^="#"]').evaluateAll(links => links.filter(a => !document.getElementById(a.hash.slice(1))).map(a => a.hash));
+    assert.deepEqual(brokenAnchors, []);
+    await page.getByRole('link', { name: 'Lees over ClauseLens' }).click();
+    assert.equal(new URL(page.url()).hash, '#case-clauselens');
+    await page.locator('summary').filter({ hasText: 'Webshops' }).click();
+    assert.ok(await page.locator('details').filter({ hasText: 'Webshops' }).getAttribute('open') !== null);
+    await page.locator('#project-description').fill('   ');
+    await page.getByRole('button', { name: 'Download je projectbrief' }).click();
+    assert.equal(await page.locator('#project-description').evaluate(el => el.validity.valid), false);
+    await page.locator('#company').fill('Voorbeeld & Partners');
+    await page.locator('#project-type').selectOption({ label: 'Een webshop' });
+    await page.locator('#project-description').fill('Een duidelijke winkel voor onze collectie.');
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Download je projectbrief' }).click();
+    const download = await downloadPromise;
+    assert.equal(download.suggestedFilename(), 'bs-designer-projectbrief.txt');
+    const brief = await readFile(await download.path(), 'utf8');
+    assert.ok(brief.includes('Voorbeeld & Partners'));
+    assert.ok(brief.includes('Een webshop'));
+    assert.ok(brief.includes('Een duidelijke winkel voor onze collectie.'));
+    assert.ok(await page.getByRole('status').innerText().then(text => text.includes('niet naar BS Designer verstuurd')));
+    await page.goto(origin);
+    await page.screenshot({ path: 'test-results/home-' + width + '.png', fullPage: true, animations: 'disabled' });
+    await page.getByRole('link', { name: 'Privacy', exact: true }).click();
+    assert.ok(await page.getByRole('heading', { level: 1 }).isVisible());
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+    await page.close();
+  }
+  const plain = await browser.newPage({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
+  await plain.goto(origin);
+  assert.ok(await plain.getByRole('heading', { level: 1 }).isVisible());
+  await plain.locator('summary').filter({ hasText: 'Webshops' }).click();
+  assert.notEqual(await plain.locator('details').filter({ hasText: 'Webshops' }).getAttribute('open'), null);
+  await plain.close();
+  const keyboard = await browser.newPage({ reducedMotion: 'reduce' });
+  await keyboard.goto(origin);
+  await keyboard.keyboard.press('Tab');
+  assert.equal(await keyboard.locator(':focus').textContent(), 'Ga naar inhoud');
+  await keyboard.keyboard.press('Enter');
+  assert.equal(new URL(keyboard.url()).hash, '#main');
+  await keyboard.close();
+  assert.deepEqual(errors, [], 'No browser or HTTP errors');
+  console.log('PASS: responsive widths, navigation, service panels, form validation, downloaded content, privacy, no-JS fallback and skip link.');
+} finally {
+  if (browser) await browser.close();
+  await new Promise(resolve => server.close(resolve));
+}

@@ -1,0 +1,17 @@
+{
+  "name": "bs-designer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Independent web studio — BS Designer",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "node --check app.js && node --check scripts/serve.mjs && node --check scripts/build.mjs && node --check tests/browser.mjs",
+    "test:browser": "node tests/browser.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
