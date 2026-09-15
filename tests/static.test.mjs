@@ -15,7 +15,7 @@ if (!server.listening) await once(server, 'listening');
 after(() => new Promise(resolve => { server.close(resolve); server.closeAllConnections(); }));
 const port = server.address().port;
 const origin = 'http://127.0.0.1:' + port;
-const outputFiles = ['app.js', 'assets/favicon.svg', 'index.html', 'privacy.html', 'styles.css'];
+const outputFiles = ['app.js', 'assets/clauselens-desktop.jpg', 'assets/clauselens-detail.jpg', 'assets/favicon.svg', 'index.html', 'privacy.html', 'styles.css'];
 const verifiedProjectLinks = new Set(['https://clauselens.org/', 'https://github.com/Bekoo023/numiconl']);
 
 async function walk(directory, prefix = '') {
@@ -58,9 +58,9 @@ test('preview serves each asset with the expected content and security headers',
     assert.equal(response.status, 200, path);
     assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
     assert.ok(response.headers.get('content-security-policy').includes("form-action 'none'"));
-    const mime = path.endsWith('.html') ? 'text/html' : path.endsWith('.css') ? 'text/css' : path.endsWith('.svg') ? 'image/svg+xml' : 'text/javascript';
+    const mime = path.endsWith('.html') ? 'text/html' : path.endsWith('.css') ? 'text/css' : path.endsWith('.jpg') ? 'image/jpeg' : path.endsWith('.svg') ? 'image/svg+xml' : 'text/javascript';
     assert.ok(response.headers.get('content-type').startsWith(mime));
-    assert.equal(await response.text(), await readFile(new URL(path, root), 'utf8'));
+    assert.deepEqual(Buffer.from(await response.arrayBuffer()), await readFile(new URL(path, root)));
   }
 });
 

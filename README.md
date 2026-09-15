@@ -40,7 +40,7 @@ De GitHub Actions-workflow voert deze controles uit bij een push of pull request
 
 - HTML, CSS en JavaScript; geen framework of client-side router nodig voor deze scope.
 - CSS-illustraties, native details-elementen en subtiele aanwijzerinteractie met respect voor reduced motion.
-- Eigen projecten ClauseLens en Numico; illustraties zijn nadrukkelijk geen echte screenshots.
+- ClauseLens als uitgelichte case met echte screenshots van de openbare homepage; Numico als compact project in ontwikkeling. Screenshotbron en grenzen staan in PORTFOLIO-SOURCES.md.
 - Geen verzonnen reviews, prijzen, resultaatclaims of klantrelaties.
 - De projectbrief wordt lokaal gedownload. Er wordt niets verstuurd en geen formulierinvoer opgeslagen.
 - Geen tracking of externe lettertypen.

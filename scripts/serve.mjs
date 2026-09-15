@@ -7,6 +7,8 @@ const files = new Map([
   ['/privacy.html', ['privacy.html', 'text/html; charset=utf-8']],
   ['/styles.css', ['styles.css', 'text/css; charset=utf-8']],
   ['/app.js', ['app.js', 'text/javascript; charset=utf-8']],
+  ['/assets/clauselens-desktop.jpg', ['assets/clauselens-desktop.jpg', 'image/jpeg']],
+  ['/assets/clauselens-detail.jpg', ['assets/clauselens-detail.jpg', 'image/jpeg']],
   ['/assets/favicon.svg', ['assets/favicon.svg', 'image/svg+xml']]
 ]);
 const port = Number(process.env.PORT || 4173);

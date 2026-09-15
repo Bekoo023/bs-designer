@@ -1,5 +1,18 @@
 # Voortgang
 
+## 2026-09-16 — ClauseLens als uitgelichte visuele case
+
+Op expliciet verzoek van Bekir de portfolioverbetering uitgevoerd.
+
+- ClauseLens kreeg een prominente case met een echte screenshot van de openbare homepage en een detailopname van het demonstratiecontract. Beide beelden zijn in de browser bekeken en lokaal opgenomen, met bronnotitie in PORTFOLIO-SOURCES.md.
+- Nieuwe inhoud beschrijft het project, design/development en twee zichtbare ontwerpkeuzes. Geen gemeten resultaten of geverifieerde werking achter login geclaimd.
+- Numico is nu een kleinere case in ontwikkeling met een korte beschrijving van dashboard, transacties en handmatige boninvoer.
+- Responsive CSS, afbeeldingsafmetingen, lazy loading, alt-teksten en links naar vergrotingen toegevoegd. De previewserver serveert beide JPEGs expliciet; assettests controleren ook binaire inhoud.
+- `npm run check`, de build via `npm test`, zes regressietests en `git diff --check` geslaagd.
+- Visuele controle van de gewijzigde BS Designer-pagina is niet afgerond: de cloudbrowser blokkeert de lokale bestands-URL vanwege URL-beleid. Geen alternatieve browserroute gebruikt om die blokkade te omzeilen. Geen mobiele productopname beschikbaar via de aangeboden browser-API.
+- Contact, productiehosting en volledige browsercontrole blijven open. Een repository-update is geen bevestigde live-publicatie.
+
+
 ## 2026-09-15 — Twee controleerbare projectverhalen
 
 Werkpakket 03 afgerond: de korte portfolio-teksten vervangen door twee casestudies met aanleiding, aanpak, techniek, actuele status en een link naar de openbare bron.
