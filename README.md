@@ -32,6 +32,8 @@ npx playwright install --with-deps chromium
 npm run test:browser
 ```
 
+Zonder browserinstallatie kun je daarnaast `npm test` draaien. Deze zes Node.js-tests bouwen de website, vergelijken alle publieke bestanden met de bron, controleren lokale links en ankers, HTTP-antwoorden, afgeschermde repositorybestanden en de afhandeling van ongeldige verzoeken. Dit vervangt de visuele controle en browsertests niet.
+
 De GitHub Actions-workflow voert deze controles uit bij een push of pull request op main. Browserchecks verifiëren vier schermbreedtes, navigatie, diensten, invoervalidatie, de inhoud van de download, privacy, JavaScript-uitval en toetsenbordnavigatie. Screenshots en de gebouwde website zijn workflow-artifacts. De setup volgt de [Playwright CI-documentatie](https://playwright.dev/docs/ci).
 
 ## Inhoud en techniek

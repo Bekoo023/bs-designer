@@ -15,7 +15,12 @@ export const server = createServer(async (req, res) => {
   if (!['GET', 'HEAD'].includes(req.method)) {
     res.writeHead(405, { Allow: 'GET, HEAD' }); res.end(); return;
   }
-  const path = new URL(req.url, 'http://localhost').pathname;
+  let path;
+  try {
+    path = new URL(req.url, 'http://localhost').pathname;
+  } catch {
+    res.writeHead(400); res.end('Bad request'); return;
+  }
   const file = files.get(path);
   if (!file) { res.writeHead(404); res.end('Not found'); return; }
   try {
