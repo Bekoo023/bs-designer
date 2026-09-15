@@ -16,6 +16,7 @@ after(() => new Promise(resolve => { server.close(resolve); server.closeAllConne
 const port = server.address().port;
 const origin = 'http://127.0.0.1:' + port;
 const outputFiles = ['app.js', 'assets/favicon.svg', 'index.html', 'privacy.html', 'styles.css'];
+const verifiedProjectLinks = new Set(['https://clauselens.org/', 'https://github.com/Bekoo023/numiconl']);
 
 async function walk(directory, prefix = '') {
   const paths = [];
@@ -42,6 +43,7 @@ test('both built pages reference existing local assets and unique internal ancho
     assert.equal([...html.matchAll(/<h1\b/g)].length, 1, path + ': one h1');
     for (const [, reference] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
       if (reference.startsWith('#')) assert.ok(ids.includes(reference.slice(1)), reference);
+      else if (reference.startsWith('https://')) assert.ok(verifiedProjectLinks.has(reference), path + ': unverified external link ' + reference);
       else {
         const relative = reference === './' ? 'index.html' : reference.replace(/^\.\//, '');
         assert.ok(outputFiles.includes(relative), path + ': unexpected or missing resource ' + reference);

@@ -1,5 +1,18 @@
 # Voortgang
 
+## 2026-09-15 — Twee controleerbare projectverhalen
+
+Werkpakket 03 afgerond: de korte portfolio-teksten vervangen door twee casestudies met aanleiding, aanpak, techniek, actuele status en een link naar de openbare bron.
+
+- ClauseLens: [actuele productpagina](https://clauselens.org/) beschrijft contract uploaden/plakken, aandachtspunten per clausule en uitleg met suggesties. Er worden geen niet-gecontroleerde resultaten of snelheidscijfers geclaimd.
+- Numico: [openbare repository](https://github.com/Bekoo023/numiconl) toont een Next.js/React/TypeScript-dashboard met Supabase-transacties en bonupload met handmatige gegevensinvoer. De eerdere tekst presenteerde automatische bonnetjesherkenning en chat als bestaand; daarvoor is geen bevestiging in de onderzochte code. De nieuwe tekst benoemt die grens.
+- Beide projectillustraties zijn nog steeds interpretaties, geen product-screenshots.
+- De lokale resourcecontrole accepteert uitsluitend deze twee gecontroleerde externe projectlinks.
+- Op de gewijzigde code zijn `npm run check`, `npm run build`, `npm test` (6/6) en `git diff --check` lokaal geslaagd; dit bewijst geen browser- of CI-succes.
+- Browser en visuele controle blijven open: de beschikbare browser blokkeerde de lokale preview-URL (`net::ERR_BLOCKED_BY_CLIENT`). De GitHub Actions-job wordt door GitHub niet gestart wegens een accountblokkade rond betaling; accountinstellingen zijn niet aangepast.
+
+Volgende stap: mobiel en desktop in een daadwerkelijk bereikbare browser beoordelen en interacties controleren; daarna de openstaande toegankelijkheids- en opleverpunten. Voor een echte contactroute blijft een door Bekir bevestigd openbaar zakelijk kanaal nodig. Er is geen productiepublicatie bevestigd.
+
 ## 2026-09-15 — Previewserver hersteld en controleerbare build
 
 Eén afgebakende verbetering aan werkpakket 02: browseronafhankelijke regressietests en herstel van een daarmee aangetoond serverdefect.
